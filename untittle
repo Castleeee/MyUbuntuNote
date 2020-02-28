@@ -1,0 +1,41 @@
+docker run -d -p 80:80 -p 443:443 \
+-v /home/ooowl/Documents/DBdata/nginx/conf:/etc/nginx/conf.d \
+-v /home/ooowl/Documents/DBdata/nginx/nginx.conf:/etc/nginx/nginx.conf \
+-v /home/ooowl/Documents/DBdata/nginx/html:/usr/share/nginx/html \
+-v /home/ooowl/Documents/DBdata/nginx/logs:/var/log/nginx \
+--name myNginx nginx 
+
+docker run -d -p 6379:6379 \
+-v /home/ooowl/Documents/DBdata/redisdata/redis.conf:/etc/redis/redis.conf \
+-v /home/ooowl/Documents/DBdata/redisdata/data:/data
+-v /home/ooowl/Documents/DBdata/redisdata/logs:/var/log/redis --name myRedis \
+redis  redis-server /etc/redis/redis.conf
+
+docker run -d -p 9000:9000 \
+    --restart=always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    --name docker-admin \
+    portainer/portainer
+
+
+docker run -d -p 3306:3306 \
+-v /home/ooowl/Documents/DBdata/mysqldata/my.cnf:/etc/mysql/my.cnf \
+-v /home/ooowl/Documents/DBdata/mysqldata/conf.d:/etc/mysql/conf.d \
+-v /home/ooowl/Documents/DBdata/mysqldata/data:/var/lib/mysql \
+-v /home/ooowl/Documents/DBdata/mysqldata/logs:/var/log/mysql \
+-e MYSQL_USER="ooowl" \
+-e MYSQL_PASSWORD="1118" \
+-e MYSQL_ROOT_PASSWORD=1118 \
+--name ohMysql --privileged=true \
+mysql
+
+
+
+
+[mysqld]
+skip-host-cache
+skip-name-resolve
+
+
+docker run -d -p 27017:27017 -v /home/ooowl/Documents/DBdata/mongo/data:/data --name Mymongo mongo --auth
+
